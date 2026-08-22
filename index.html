@@ -267,6 +267,50 @@
       overflow: hidden;
     }
 
+    /* 추천 유튜브 영역 추가 스타일 */
+    .youtube-section {
+      margin-top: 40px;
+      border-top: 1px solid #f0ece1;
+      padding-top: 28px;
+    }
+
+    .youtube-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .youtube-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .youtube-card {
+      background: #fcfbf7;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .youtube-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .youtube-btn {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #c48332;
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -373,12 +417,49 @@
         </div>
       </div>
 
+      <!-- 추천하는 유튜브 채널 영역 -->
+      <div class="youtube-section">
+        <div class="youtube-header">
+          <h2>추천하는 유튜브 채널</h2>
+          <span class="badge-sub">Recommended YouTube</span>
+        </div>
+
+        <div class="card-grid">
+          <!-- 유튜브 카드 1 -->
+          <a href="https://www.youtube.com/@EBSDocumentary" target="_blank" rel="noopener noreferrer" class="youtube-card">
+            <div class="card-img-wrapper">
+              <img src="https://img.youtube.com/vi/3N3-p3J957g/hqdefault.jpg" alt="EBS 다큐">
+            </div>
+            <div class="card-info">
+              <span class="card-date">세계 여행 / 다큐</span>
+              <span class="card-tag">추천 채널</span>
+            </div>
+            <div class="card-title">EBS 다큐멘터리 (세계테마기행)</div>
+            <div class="card-desc">세계 곳곳의 숨겨진 비경과 깊이 있는 문화를 간직한 대자연을 영상으로 생생하게 볼 수 있어 자주 참고하는 채널입니다.</div>
+            <span class="youtube-btn">▶ 채널 바로가기</span>
+          </a>
+
+          <!-- 유튜브 카드 2 -->
+          <a href="https://www.youtube.com/@PaniBottle" target="_blank" rel="noopener noreferrer" class="youtube-card">
+            <div class="card-img-wrapper">
+              <img src="https://img.youtube.com/vi/B97C2B2-eEE/hqdefault.jpg" alt="빠니보틀">
+            </div>
+            <div class="card-info">
+              <span class="card-date">오지 여행 / 로드트립</span>
+              <span class="card-tag">추천 채널</span>
+            </div>
+            <div class="card-title">빠니보틀 Pani Bottle</div>
+            <div class="card-desc">날것 그대로의 오지 여행기와 다양한 문화권 사람들과 솔직하게 소통하는 유쾌한 여행 팁을 배울 수 있는 채널입니다.</div>
+            <span class="youtube-btn">▶ 채널 바로가기</span>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <!-- 구글 시트 연동 자바스크립트 -->
   <script>
-    // 구글 드라이브 일반 공유 주소를 이미지 직링크로 변환
     function getDriveDirectLink(url) {
       if (!url) return '';
       if (url.includes('drive.google.com') || url.includes('docs.google.com')) {
@@ -390,7 +471,6 @@
       return url;
     }
 
-    // 로컬 이미지 대체 순서
     function handleImageError(img) {
       if (!img.dataset.step) {
         img.dataset.step = "1";
