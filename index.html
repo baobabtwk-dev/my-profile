@@ -376,9 +376,10 @@
     </div>
   </div>
 
-  <!-- 구글 시트 연동 자바스크립트 -->
   <script>
-    // 구글 드라이브 일반 공유 주소를 이미지 직링크로 변환
+    // ★ 다른 사람이 접속해도 항상 이 구글 시트 주소를 자동으로 불러옵니다 ★
+    const DEFAULT_SHEET_URL = '여기에_본인의_구글_시트_전체_주소를_넣으세요';
+
     function getDriveDirectLink(url) {
       if (!url) return '';
       if (url.includes('drive.google.com') || url.includes('docs.google.com')) {
@@ -390,7 +391,6 @@
       return url;
     }
 
-    // 로컬 이미지 대체 순서
     function handleImageError(img) {
       if (!img.dataset.step) {
         img.dataset.step = "1";
@@ -512,8 +512,10 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const savedUrl = localStorage.getItem('user_sheet_url');
-      if (savedUrl) {
+      // 1순위: 로컬 스토리지에 저장된 URL / 2순위: 기본 지정된 DEFAULT_SHEET_URL
+      const savedUrl = localStorage.getItem('user_sheet_url') || DEFAULT_SHEET_URL;
+      
+      if (savedUrl && savedUrl !== '여기에_본인의_구글_시트_전체_주소를_넣으세요') {
         document.getElementById('sheet-url-input').value = savedUrl;
         const sheetId = extractSheetId(savedUrl);
         if (sheetId) loadSheetData(sheetId);
