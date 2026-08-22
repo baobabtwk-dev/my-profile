@@ -1,589 +1,524 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프로필 페이지</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>토니 바오밥의 프로필 & 여행 기록</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #fcfaf6;
-            color: #292524;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 32px 16px;
-        }
+    body {
+      background-color: #fbf9f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 980px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+    .container {
+      display: flex;
+      gap: 24px;
+      max-width: 960px;
+      width: 100%;
+    }
 
-        @media (min-width: 768px) {
-            .container {
-                flex-direction: row;
-                align-items: flex-start;
-            }
-        }
+    /* 좌측 프로필 카드 */
+    .profile-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 36px 24px;
+      width: 290px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      height: fit-content;
+    }
 
-        .profile-card {
-            background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(180, 150, 110, 0.08), 0 8px 10px -6px rgba(180, 150, 110, 0.04);
-            border: 1px solid #f3ebd9;
-            width: 100%;
-            padding: 36px 24px 28px 24px;
-            text-align: center;
-        }
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #f6e3b5;
+      background-color: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+    }
 
-        @media (min-width: 768px) {
-            .profile-card {
-                width: 290px;
-                flex-shrink: 0;
-                position: sticky;
-                top: 32px;
-            }
-        }
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
 
-        .profile-img-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px auto;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(180, 150, 110, 0.12);
-            border: 4px solid #eee1cd;
-        }
+    .profile-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+    }
 
-        .profile-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .profile-badge {
+      background-color: #fff8eb;
+      color: #b78037;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-        .profile-name {
-            font-size: 1.55rem;
-            font-weight: 800;
-            color: #1c1917;
-            margin-bottom: 10px;
-            letter-spacing: -0.02em;
-        }
+    .profile-bio {
+      color: #555;
+      font-size: 13.5px;
+      text-align: justify;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
 
-        .profile-tagline {
-            display: inline-block;
-            font-size: 0.825rem;
-            font-weight: 600;
-            color: #8c673b;
-            background-color: #f5ece0;
-            padding: 5px 14px;
-            border-radius: 9999px;
-            margin-bottom: 24px;
-        }
+    /* 우측 메인 콘텐츠 */
+    .main-content {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
 
-        .profile-bio-divider {
-            height: 1px;
-            background-color: #f5eee4;
-            margin: 0 10px 20px 10px;
-        }
+    .header-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
 
-        .profile-bio {
-            font-size: 0.925rem;
-            line-height: 1.6;
-            color: #57534e;
-            word-break: keep-all;
-        }
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .travel-container {
-            flex: 1;
-            min-width: 0;
-            background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(180, 150, 110, 0.08), 0 8px 10px -6px rgba(180, 150, 110, 0.04);
-            border: 1px solid #f3ebd9;
-            padding: 28px 24px;
-        }
+    .title-group h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+    }
 
-        .travel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+    .badge-sub {
+      background-color: #fff8eb;
+      color: #b78037;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
 
-        .travel-title-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .btn-sheet {
+      background-color: #f7f5ed;
+      color: #555;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .travel-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #1c1917;
-            letter-spacing: -0.02em;
-        }
+    /* 연동 박스 */
+    .sync-box {
+      background-color: #faf8ef;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
 
-        .badge-travel {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #8c673b;
-            background-color: #f5ece0;
-            padding: 3px 10px;
-            border-radius: 9999px;
-        }
+    .sync-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
 
-        .sheet-toggle-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            background-color: #f5ece0;
-            color: #78562d;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    .sync-title {
+      font-weight: 700;
+      color: #333;
+    }
 
-        .sheet-toggle-btn:hover {
-            background-color: #ebdcc9;
-        }
+    .sync-notice {
+      color: #888;
+    }
 
-        .sheet-section {
-            background-color: #fcf8f2;
-            border-radius: 18px;
-            padding: 18px 20px;
-            border: 1px solid #f0e6d8;
-            margin-bottom: 24px;
-        }
+    .input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
 
-        .sheet-header-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
+    .input-group input {
+      flex: 1;
+      border: 1px solid #e2ded0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+    }
 
-        .sheet-label {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: #292524;
-        }
+    .btn-sync {
+      background-color: #c48332;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
-        .sheet-sublabel {
-            font-size: 0.75rem;
-            color: #a89c8d;
-        }
+    .btn-sync:hover {
+      background-color: #b07228;
+    }
 
-        .sheet-input-group {
-            display: flex;
-            gap: 8px;
-        }
+    .sync-status {
+      font-size: 12px;
+      color: #4a8b57;
+      display: none;
+    }
 
-        .sheet-input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #e7dcd0;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            outline: none;
-            background-color: #ffffff;
-            color: #292524;
-            transition: border-color 0.2s;
-        }
+    /* 카드 그리드 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
 
-        .sheet-input:focus {
-            border-color: #b86d29;
-        }
+    .travel-card {
+      background: #fcfbf7;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .sheet-btn {
-            padding: 10px 18px;
-            background-color: #c87a32;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-        }
+    .card-img-wrapper {
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      background-color: #eee;
+    }
 
-        .sheet-btn:hover {
-            background-color: #b06824;
-        }
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .status-message {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: none;
-        }
+    .card-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
 
-        .status-message.success {
-            color: #2f855a;
-            display: block;
-        }
+    .card-date {
+      color: #b78037;
+      font-weight: 700;
+    }
 
-        .status-message.error {
-            color: #dc2626;
-            display: block;
-        }
+    .card-tag {
+      color: #a0a0a0;
+    }
 
-        .travel-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
 
-        @media (max-width: 520px) {
-            .travel-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    .card-desc {
+      font-size: 12.5px;
+      color: #666;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
-        .travel-card {
-            background-color: #fbf8f3;
-            border-radius: 18px;
-            padding: 12px;
-            border: 1px solid #eee5d8;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .travel-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(180, 140, 90, 0.12);
-        }
-
-        .travel-img-container {
-            width: 100%;
-            height: 140px;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #f2eade;
-        }
-
-        .travel-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .travel-content {
-            padding: 10px 4px 4px 4px;
-        }
-
-        .travel-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .travel-date {
-            color: #b07d4f;
-        }
-
-        .travel-place {
-            color: #a19585;
-            font-weight: 500;
-        }
-
-        .travel-desc {
-            font-size: 0.925rem;
-            font-weight: 700;
-            color: #1c1917;
-            line-height: 1.4;
-            word-break: keep-all;
-        }
-    </style>
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .profile-card {
+        width: 100%;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 1. 좌측 프로필 영역 -->
-        <div class="profile-card">
-            <div class="profile-img-container">
-                <img id="profile-img" src="profile.jpg" alt="프로필 사진" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&auto=format&fit=crop&q=80';">
-            </div>
-            <h1 class="profile-name" id="profile-name">바오밥</h1>
-            <span class="profile-tagline" id="profile-tagline">정보통의 세상이야기</span>
-            <div class="profile-bio-divider"></div>
-            <p class="profile-bio" id="profile-bio">
-                언제나 따뜻한 사람들과 따뜻한 이야기
-            </p>
-        </div>
-
-        <!-- 2. 우측 메인 컨테이너 (여행 기록 & 시트 연동) -->
-        <div class="travel-container">
-            <div class="travel-header">
-                <div class="travel-title-group">
-                    <h2 class="travel-title">나의 여행 기록</h2>
-                    <span class="badge-travel">Travel Notes</span>
-                </div>
-                <button class="sheet-toggle-btn" onclick="toggleSheetSection()">📊 구글 시트 연동</button>
-            </div>
-
-            <!-- 구글 시트 연동 박스 -->
-            <div class="sheet-section" id="sheet-section">
-                <div class="sheet-header-info">
-                    <span class="sheet-label">구글 스프레드시트 URL 입력</span>
-                    <span class="sheet-sublabel">* '프로필', '여행' 시트 탭 공개 설정 필요</span>
-                </div>
-                <div class="sheet-input-group">
-                    <input type="text" id="sheet-url" class="sheet-input" placeholder="https://docs.google.com/spreadsheets/d/...">
-                    <button class="sheet-btn" onclick="fetchGoogleSheetData()">연동하기</button>
-                </div>
-                <div id="status-msg" class="status-message"></div>
-            </div>
-
-            <!-- 여행 기록 카드 그리드 -->
-            <div class="travel-grid" id="travel-grid">
-                <!-- 카드 1 -->
-                <div class="travel-card">
-                    <div class="travel-img-container">
-                        <img src="20260622_172232.jpg" alt="여행 사진 1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80';">
-                    </div>
-                    <div class="travel-content">
-                        <div class="travel-meta">
-                            <span class="travel-date">2026.06.22</span>
-                            <span class="travel-place">제주도 우도</span>
-                        </div>
-                        <p class="travel-desc">푸른 에메랄드빛 바다와 섬 속의 작은 섬 우도 산책</p>
-                    </div>
-                </div>
-
-                <!-- 카드 2 -->
-                <div class="travel-card">
-                    <div class="travel-img-container">
-                        <img src="20260623_110155.jpg" alt="여행 사진 2" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80';">
-                    </div>
-                    <div class="travel-content">
-                        <div class="travel-meta">
-                            <span class="travel-date">2026.06.23</span>
-                            <span class="travel-place">서귀포 천지연</span>
-                        </div>
-                        <p class="travel-desc">시원한 폭포 소리와 함께 즐긴 여유로운 아침</p>
-                    </div>
-                </div>
-
-                <!-- 카드 3 -->
-                <div class="travel-card">
-                    <div class="travel-img-container">
-                        <img src="20260623_110320.jpg" alt="여행 사진 3" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&auto=format&fit=crop&q=80';">
-                    </div>
-                    <div class="travel-content">
-                        <div class="travel-meta">
-                            <span class="travel-date">2026.06.23</span>
-                            <span class="travel-place">협재 해수욕장</span>
-                        </div>
-                        <p class="travel-desc">붉게 물드는 석양을 바라보며 보낸 힐링 타임</p>
-                    </div>
-                </div>
-
-                <!-- 카드 4 -->
-                <div class="travel-card">
-                    <div class="travel-img-container">
-                        <img src="20260630_113339.jpg" alt="여행 사진 4" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop&q=80';">
-                    </div>
-                    <div class="travel-content">
-                        <div class="travel-meta">
-                            <span class="travel-date">2026.06.30</span>
-                            <span class="travel-place">한라산 영실코스</span>
-                        </div>
-                        <p class="travel-desc">상쾌한 산공기와 기암괴석이 어우러진 멋진 등산</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <!-- 왼쪽 프로필 영역 -->
+    <div class="profile-card">
+      <div class="profile-avatar">
+        <img id="profile-img" 
+             src="profile.jpg" 
+             onerror="handleImageError(this)"
+             alt="프로필 이미지">
+      </div>
+      <div id="profile-name" class="profile-name">토니 바오밥</div>
+      <div id="profile-badge" class="profile-badge">시간을 걸으면서 나를 찾는 나</div>
+      <div id="profile-bio" class="profile-bio">
+        저는 30년 이상 공직생활을 하고 2024년부로 퇴직 후, 재직 중 하지 못했던 세계 오지를 여행하면서 느낀 솔직한 감정을 블로그에 올려 독자들과 소통하며 이 자료들을 정리하여 책을 출판하는 작가로 활동 중입니다.<br><br>
+        그리고 관광통역안내사 자격증을 활용하여 한국을 방문하는 외국인에게 우리나라를 홍보하는 민간 외교관 역할을 수행 중입니다.
+      </div>
     </div>
 
-    <script>
-        function toggleSheetSection() {
-            const sheetSection = document.getElementById('sheet-section');
-            if (sheetSection.style.display === 'none') {
-                sheetSection.style.display = 'block';
-            } else {
-                sheetSection.style.display = 'none';
-            }
+    <!-- 오른쪽 메인 콘텐츠 영역 -->
+    <div class="main-content">
+      <div class="header-area">
+        <div class="title-group">
+          <h1>나의 여행 기록</h1>
+          <span class="badge-sub">Travel Notes</span>
+        </div>
+        <button class="btn-sheet" onclick="document.getElementById('sheet-url-input').focus()">📊 구글 시트 연동</button>
+      </div>
+
+      <!-- 구글 시트 URL 입력 영역 -->
+      <div class="sync-box">
+        <div class="sync-header">
+          <span class="sync-title">구글 스프레드시트 URL 입력</span>
+          <span class="sync-notice">* 'profile', 'travel' 시트 탭 공개 설정 필요</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="sheet-url-input" placeholder="구글 스프레드시트 전체 URL 주소를 입력하세요">
+          <button class="btn-sync" onclick="handleConnect()">연동하기</button>
+        </div>
+        <div id="sync-status" class="sync-status">✓ 성공적으로 연동되었습니다! (profile, travel 시트)</div>
+      </div>
+
+      <!-- 카드 리스트 영역 -->
+      <div id="card-grid" class="card-grid">
+        <div class="travel-card">
+          <div class="card-img-wrapper">
+            <img src="https://lh3.googleusercontent.com/d/1SG5gf6JUBcNsk3TIEtzevIBL81-vZOpC" alt="바이칼호 알혼섬">
+          </div>
+          <div class="card-info">
+            <span class="card-date">2026.06.22</span>
+            <span class="card-tag">바이칼호</span>
+          </div>
+          <div class="card-title">바이칼호 알혼섬</div>
+          <div class="card-desc">웅장한 부르한 바위와 에메랄드빛 바이칼호를 바라보며 나를 만나는 시간.</div>
+        </div>
+
+        <div class="travel-card">
+          <div class="card-img-wrapper">
+            <img src="https://lh3.googleusercontent.com/d/1Ka3Xa-r7b5nUSUPa7jHt4BHcnggOuS-7" alt="바이칼 호숫가">
+          </div>
+          <div class="card-info">
+            <span class="card-date">2026.06.23</span>
+            <span class="card-tag">바이칼호</span>
+          </div>
+          <div class="card-title">바이칼 호숫가</div>
+          <div class="card-desc">잔잔하게 밀려오는 물결 소리를 들으며 떠나는 바이칼 산책.</div>
+        </div>
+
+        <div class="travel-card">
+          <div class="card-img-wrapper">
+            <img src="https://lh3.googleusercontent.com/d/1Z_mcwO4h8nuyOmhO-lalTX0QCbDvKsb-" alt="바이칼 해변">
+          </div>
+          <div class="card-info">
+            <span class="card-date">2026.06.23</span>
+            <span class="card-tag">바이칼호</span>
+          </div>
+          <div class="card-title">바이칼 해변</div>
+          <div class="card-desc">넓게 펼쳐진 백사장과 아침 햇살이 반짝이는 맑은 물결.</div>
+        </div>
+
+        <div class="travel-card">
+          <div class="card-img-wrapper">
+            <img src="https://lh3.googleusercontent.com/d/1VkxKCYcQLzm5j9N3hu4KbODXK5B1X8JN" alt="백두산 천문봉">
+          </div>
+          <div class="card-info">
+            <span class="card-date">2026.06.30</span>
+            <span class="card-tag">백두산</span>
+          </div>
+          <div class="card-title">백두산 천문봉</div>
+          <div class="card-desc">동료들과 함께 정상에 올라 바라본 장엄한 백두산 천지의 풍경.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 구글 시트 연동 자바스크립트 -->
+  <script>
+    // 구글 드라이브 일반 공유 주소를 이미지 직링크로 변환
+    function getDriveDirectLink(url) {
+      if (!url) return '';
+      if (url.includes('drive.google.com') || url.includes('docs.google.com')) {
+        const match = url.match(/\/d\/([a-zA-R0-9-_]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
         }
+      }
+      return url;
+    }
 
-        async function fetchGoogleSheetData() {
-            const urlInput = document.getElementById('sheet-url').value.trim();
-            const statusMsg = document.getElementById('status-msg');
+    // 로컬 이미지 대체 순서
+    function handleImageError(img) {
+      if (!img.dataset.step) {
+        img.dataset.step = "1";
+        img.src = "images/profile.jpg";
+      } else if (img.dataset.step === "1") {
+        img.dataset.step = "2";
+        img.src = "https://lh3.googleusercontent.com/d/19VrLpnuNYzzl6SbM56sWwJio24SJqQH_KY7n2jxQkSk";
+      }
+    }
 
-            if (!urlInput) {
-                showStatus('구글 스프레드시트 URL을 입력해 주세요.', 'error');
-                return;
+    function extractSheetId(url) {
+      const match = url.match(/\/d\/([a-zA-R0-9-_]+)/);
+      return match ? match[1] : null;
+    }
+
+    function handleConnect() {
+      const urlInput = document.getElementById('sheet-url-input').value.trim();
+      if (!urlInput) {
+        alert('구글 스프레드시트 URL을 입력해 주세요.');
+        return;
+      }
+
+      const sheetId = extractSheetId(urlInput);
+      if (!sheetId) {
+        alert('유효한 구글 스프레드시트 URL이 아닙니다.');
+        return;
+      }
+
+      localStorage.setItem('user_sheet_url', urlInput);
+      loadSheetData(sheetId);
+    }
+
+    async function loadSheetData(sheetId) {
+      const statusEl = document.getElementById('sync-status');
+      
+      try {
+        const profileUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=profile`;
+        const res = await fetch(profileUrl);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(47, text.length - 2));
+        
+        const cols = json.table.cols;
+        const rows = json.table.rows;
+
+        if (rows && rows.length > 0) {
+          const colMap = {};
+          cols.forEach((col, idx) => {
+            if (col && col.label) {
+              colMap[col.label.trim().toLowerCase()] = idx;
             }
+          });
 
-            // 구글 시트 ID 추출
-            const matches = urlInput.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            if (!matches || !matches[1]) {
-                showStatus('올바른 구글 스프레드시트 주소가 아닙니다.', 'error');
-                return;
+          const nameIdx = colMap['name'] !== undefined ? colMap['name'] : 0;
+          const taglineIdx = colMap['tagline'] !== undefined ? colMap['tagline'] : 1;
+          const introIdx = colMap['introduction'] !== undefined ? colMap['introduction'] : 2;
+          const imageIdx = colMap['image'] !== undefined ? colMap['image'] : 3;
+
+          const row = rows[0].c;
+
+          if (row) {
+            if (row[nameIdx] && row[nameIdx].v) {
+              document.getElementById('profile-name').innerText = row[nameIdx].v;
             }
-
-            const sheetId = matches[1];
-            const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
-
-            try {
-                showStatus('데이터를 불러오는 중입니다...', 'success');
-                const response = await fetch(gvizUrl);
-                const text = await response.text();
-                
-                const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                const data = JSON.parse(jsonText);
-
-                const rows = data.table.rows;
-
-                if (!rows || rows.length === 0) {
-                    showStatus('시트에 데이터가 없습니다.', 'error');
-                    return;
-                }
-
-                // 프로필 관련 및 여행 헤더 인덱스
-                let nameIdx = -1, taglineIdx = -1, introIdx = -1, profileImgIdx = -1;
-                let dateIdx = -1, placeIdx = -1, storyIdx = -1, imageIdx = -1;
-                
-                let headerRowIndex = 0;
-
-                if (data.table.cols) {
-                    data.table.cols.forEach((col, idx) => {
-                        if (col && col.label) {
-                            const label = col.label.toLowerCase().trim();
-                            if (label === 'name') nameIdx = idx;
-                            if (label === 'tagline') taglineIdx = idx;
-                            if (label === 'introduction' || label === 'intro') introIdx = idx;
-                            if (label === 'profile_image') profileImgIdx = idx;
-
-                            if (label === 'date') dateIdx = idx;
-                            if (label === 'place') placeIdx = idx;
-                            if (label === 'story') storyIdx = idx;
-                            if (label === 'image' || label === 'img') imageIdx = idx;
-                        }
-                    });
-                }
-
-                if (rows[0] && rows[0].c) {
-                    let hasHeaderName = false;
-                    rows[0].c.forEach((cell, idx) => {
-                        if (cell && cell.v !== null && cell.v !== undefined) {
-                            const val = String(cell.v).toLowerCase().trim();
-                            if (val === 'name') { nameIdx = idx; hasHeaderName = true; }
-                            if (val === 'tagline') { taglineIdx = idx; hasHeaderName = true; }
-                            if (val === 'introduction' || val === 'intro') { introIdx = idx; hasHeaderName = true; }
-                            if (val === 'profile_image') { profileImgIdx = idx; hasHeaderName = true; }
-
-                            if (val === 'date') { dateIdx = idx; hasHeaderName = true; }
-                            if (val === 'place') { placeIdx = idx; hasHeaderName = true; }
-                            if (val === 'story') { storyIdx = idx; hasHeaderName = true; }
-                            if (val === 'image' || val === 'img') { imageIdx = idx; hasHeaderName = true; }
-                        }
-                    });
-                    if (hasHeaderName) {
-                        headerRowIndex = 1;
-                    }
-                }
-
-                if (dateIdx === -1) dateIdx = 0;
-                if (placeIdx === -1) placeIdx = 1;
-                if (storyIdx === -1) storyIdx = 2;
-                if (imageIdx === -1) imageIdx = 3;
-
-                const getVal = (cells, idx) => {
-                    if (idx === -1 || !cells || !cells[idx]) return '';
-                    const cell = cells[idx];
-                    if (cell.v !== null && cell.v !== undefined) return String(cell.v).trim();
-                    if (cell.f !== null && cell.f !== undefined) return String(cell.f).trim();
-                    return '';
-                };
-
-                // 1. 프로필 정보 업데이트
-                if (headerRowIndex < rows.length && rows[headerRowIndex] && rows[headerRowIndex].c) {
-                    const firstDataCells = rows[headerRowIndex].c;
-                    const nameVal = getVal(firstDataCells, nameIdx);
-                    const taglineVal = getVal(firstDataCells, taglineIdx);
-                    const introVal = getVal(firstDataCells, introIdx);
-                    const profileImgVal = getVal(firstDataCells, profileImgIdx);
-
-                    if (nameVal) document.getElementById('profile-name').innerText = nameVal;
-                    if (taglineVal) document.getElementById('profile-tagline').innerText = taglineVal;
-                    if (introVal) document.getElementById('profile-bio').innerText = introVal;
-                    if (profileImgVal) document.getElementById('profile-img').src = profileImgVal;
-                }
-
-                const travelGrid = document.getElementById('travel-grid');
-                let travelCardsHTML = '';
-                let travelCount = 0;
-
-                for (let i = headerRowIndex; i < rows.length; i++) {
-                    if (!rows[i] || !rows[i].c) continue;
-                    const cells = rows[i].c;
-
-                    const dateVal = getVal(cells, dateIdx);
-                    const placeVal = getVal(cells, placeIdx);
-                    const storyVal = getVal(cells, storyIdx);
-                    const imageVal = getVal(cells, imageIdx);
-
-                    if (dateVal || placeVal || storyVal || imageVal) {
-                        const fallbackImg = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80';
-                        const imgSrc = imageVal || fallbackImg;
-
-                        travelCardsHTML += `
-                            <div class="travel-card">
-                                <div class="travel-img-container">
-                                    <img src="${imgSrc}" alt="${placeVal || '여행 사진'}" onerror="this.onerror=null; this.src='${fallbackImg}';">
-                                </div>
-                                <div class="travel-content">
-                                    <div class="travel-meta">
-                                        <span class="travel-date">${dateVal || '날짜 미상'}</span>
-                                        <span class="travel-place">${placeVal || '장소 미상'}</span>
-                                    </div>
-                                    <p class="travel-desc">${storyVal || ''}</p>
-                                </div>
-                            </div>
-                        `;
-                        travelCount++;
-                    }
-                }
-
-                if (travelCount > 0) {
-                    travelGrid.innerHTML = travelCardsHTML;
-                    showStatus('✓ 성공적으로 연동되었습니다! (프로필, 여행 시트)', 'success');
-                } else {
-                    showStatus('✓ 연동되었으나 여행 기록 데이터를 찾지 못했습니다.', 'success');
-                }
-
-            } catch (err) {
-                console.error(err);
-                showStatus('데이터를 가져오는데 실패했습니다. 시트 공유 설정을 확인해 주세요.', 'error');
+            if (row[taglineIdx] && row[taglineIdx].v) {
+              document.getElementById('profile-badge').innerText = row[taglineIdx].v;
             }
+            if (row[introIdx] && row[introIdx].v) {
+              document.getElementById('profile-bio').innerHTML = String(row[introIdx].v).replace(/\n/g, '<br>');
+            }
+            if (row[imageIdx] && row[imageIdx].v) {
+              const rawImgUrl = String(row[imageIdx].v).trim();
+              document.getElementById('profile-img').src = getDriveDirectLink(rawImgUrl);
+            }
+          }
         }
+      } catch (err) {
+        console.log('profile 시트 로드 실패:', err);
+      }
 
-        function showStatus(message, type) {
-            const statusMsg = document.getElementById('status-msg');
-            statusMsg.innerText = message;
-            statusMsg.className = `status-message ${type}`;
+      try {
+        const travelUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=travel`;
+        const res = await fetch(travelUrl);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(47, text.length - 2));
+        const rows = json.table.rows;
+
+        if (rows && rows.length > 0) {
+          const gridContainer = document.getElementById('card-grid');
+          gridContainer.innerHTML = ''; 
+
+          rows.forEach(r => {
+            const c = r.c;
+            const date = c[0] ? c[0].v : '';
+            const place = c[1] ? c[1].v : '';
+            const story = c[2] ? c[2].v : '';
+            const image = getDriveDirectLink(c[3] ? c[3].v : '');
+
+            const cardHtml = `
+              <div class="travel-card">
+                <div class="card-img-wrapper">
+                  <img src="${image}" alt="${place}">
+                </div>
+                <div class="card-info">
+                  <span class="card-date">${date}</span>
+                  <span class="card-tag">${place}</span>
+                </div>
+                <div class="card-title">${place}</div>
+                <div class="card-desc">${story}</div>
+              </div>
+            `;
+            gridContainer.innerHTML += cardHtml;
+          });
+          
+          statusEl.style.display = 'block';
         }
-    </script>
+      } catch (err) {
+        console.log('travel 시트 로드 실패:', err);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedUrl = localStorage.getItem('user_sheet_url');
+      if (savedUrl) {
+        document.getElementById('sheet-url-input').value = savedUrl;
+        const sheetId = extractSheetId(savedUrl);
+        if (sheetId) loadSheetData(sheetId);
+      }
+    });
+  </script>
 </body>
 </html>
